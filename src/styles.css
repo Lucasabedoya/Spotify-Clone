@@ -1,0 +1,290 @@
+
+/* LOGIN */
+
+.login__body{
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+    background-color: #38ca57;
+    width: 100%;
+    height: 100vh;
+}
+
+.login__img{
+    width: 100vh;
+}
+
+.login__button{
+    background-color: #111111;
+    color: #38ca57;
+    border: none;
+    padding: 2vh 4vh;
+    border-radius: 4vh;
+    font-size: 3vh;
+}
+
+/* SPOTIFY */
+
+.body{
+    display: grid;
+    grid-template-rows: 85vh 15vh;
+}
+
+.spotify{
+    display: grid;
+    grid-template-columns: 15vw 85vw;
+    background: linear-gradient(#38ca57, rgb(0,0,0,1));
+}
+
+/* SIDEBAR */
+
+.sidebar__container{
+    background-color: #1f1d1d;
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.sidebar__logo{
+    width: 90%;
+    max-height: 20%;
+    margin: 1vh;
+}
+
+.sidebar__list{
+    display: flex;
+    flex-direction: column;
+    color: #c7c7c7;
+    padding: 2vh 0;
+}
+
+.sidebar__list__li{
+    padding: 2vh;
+    cursor: pointer;
+}
+
+.sidebar__list__li__span{
+    padding: 0 1rem;
+    font-size: 1.2rem;
+}
+
+.sidebar__list__li:hover{
+    transition: .1s ease-in-out;
+    color: #ffffff
+}
+
+
+.sidebar__playlist{
+    padding: 0 1rem;
+}
+
+.sidebar__playlist__container{
+    border-top: 1px solid #3b3b3b;
+    display: flex;
+    flex-flow: column nowrap;
+    font-size: 1.1rem;
+    color: #ffffff;
+}
+
+.sidebar__playlist__tittle{
+    padding: .7rem 1rem;
+}
+
+.sidebar__playlist__item{
+    list-style: square inside;
+    padding: .5rem 1rem;
+    font-size: 1.2rem;
+    color: #c7c7c7;
+    cursor: pointer;
+}
+
+.sidebar__playlist__item:hover{
+    color: #ffffff;
+    transition: .1s ease-in-out;
+}
+
+/* NAVBAR */
+
+.navbar-content{
+    width: 85vw;
+    display: flex;
+    flex-flow: column nowrap;
+    margin-bottom: 1rem;
+}
+
+.navbar-profile{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    background-color: #1a1919;
+    color: #ffffff;
+    justify-content: end;
+}
+
+.navbar__user{
+    padding-right:1rem;
+}
+
+
+.navbar-container{
+    display: flex;
+    width: 300px;
+    height: 50px;
+    border-radius: 2rem;
+    margin: 1rem;
+    align-items: center;
+    background-color: #dddddd;
+}
+
+.navbar-container:hover{
+    background-color: #ffffff;
+    outline: #333 solid .5px;
+    transition: .5s;
+}
+
+.navbar__icon{
+    width: 1rem;
+    padding: 1rem;
+}
+
+.navbar__input{
+    background-color: transparent;
+    padding: 5px;
+    font-size: 1rem;
+}
+
+/* BODY */
+
+.body__contents{
+    height: 80%;
+}
+
+.playlist-container{
+    display: flex;
+    color: #ffffff;
+    margin-bottom: 1rem;
+}
+
+.playlist__tittle{
+    font-size: 6rem;
+}
+
+.playlist__description{
+    color: #c7c7c7;
+}
+
+.playlist-container__img{
+    margin: 0 2rem;
+    box-shadow: 0 1px 1rem 4px rgba(0, 0, 0, 0.25)
+}
+
+.playlist-container__description{
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-evenly;
+}
+
+.tracks-container{
+    background-color: #1f1d1da0;
+}
+
+.track-container{
+    display: flex;  
+    flex-flow: row nowrap;
+    color: #ffffff;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.track-container__desc{
+    display: flex;
+    flex-flow: row nowrap;
+    color: #ffffff;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.track-container:hover{
+    background-color: #111111;
+    transition: .6s;
+    cursor: pointer;
+}
+
+.col__img{
+    margin: 0 1rem;
+    width: 50px;
+}
+
+.col__tittle{
+    margin: 0 1rem;
+}
+
+.track__description{
+    display: flex;
+    flex-wrap: nowrap;
+    margin: .3rem 1rem;
+    width: 60%;
+    align-items: center;
+}
+
+.track__autors{
+    display: flex;
+    flex-direction: column;
+}
+
+.col{
+    display: flex; 
+    width: 30%;
+}
+
+.body__contents{
+   max-height: 85vh;
+   overflow: scroll;
+}
+
+/* FOOTER */
+
+.footer__container{
+    height: 100%;
+    width: 100%;
+    background-color: #181818;
+    border-top: 1px solid #282828;
+    padding: 0 1rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    /* padding: 0 5rem; */
+}
+
+.current-track{
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+}
+
+.track__image{
+    width: 5rem;
+}
+
+.track__info{
+    padding: 0 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: 60px;
+}
+
+
+.track__info__track__artists{
+    color: #9f9f9f;
+}
+
+.controls-container{
+    display: flex;
+    color: #ffffff;
+}
+
+.controls__button{
+    font-size: 3rem;
+    padding: 0 1rem;
+}
