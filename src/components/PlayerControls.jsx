@@ -1,46 +1,15 @@
 import axios from 'axios';
 import React,{useEffect} from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {BsFillPlayCircleFill,BsFillPauseCircleFill,} from "react-icons/bs";
 import { CgPlayTrackNext, CgPlayTrackPrev } from "react-icons/cg";
-import {useStates} from '../utils/providerState'
+import { setPlayerEstado, setCurrentPlaylist} from '../store/counterSlice';
 
 
 const PlayerControls = (props) => {
 
-  const { playerEstado, setThePlayerEstado, setTheCurrentP, currentP } = useStates();
-
-  useEffect(() => {
-
-    const getPlaylistData = async() => {
-
-        const response = await axios.get(
-            "https://api.spotify.com/v1/me/player/currently-playing",
-            {
-                headers: {
-                Authorization: "Bearer " + props.token,
-                "Content-Type": "application/json",
-                },
-            }
-        );
-
-        if (response.data !== "") {
-            const currentPlaying = {
-              id: response.data.item.id,
-              name: response.data.item.name,
-              artists: response.data.item.artists.map((artist) => artist.name),
-              image: response.data.item.album.images[2].url,
-            };
-            setTheCurrentP(currentPlaying);
-            // setThePlayerEstado(true)  
-        } else {
-            console.log("error")
-        }
-        
-    };
-
-    getPlaylistData();
-
-  }, [props.currentState,currentP]);
+  const { token, playlists, currentPlaylist, playerEstado } = useSelector(state => state.spotify)
+  const dispatch = useDispatch();
 
   const getNewTrack = async() => {
 
@@ -48,7 +17,7 @@ const PlayerControls = (props) => {
       "https://api.spotify.com/v1/me/player/currently-playing", 
       {
           headers: {
-          Authorization: "Bearer " + props.token,
+          Authorization: "Bearer " + token,
           "Content-Type": "application/json",
           },
       }
@@ -60,7 +29,7 @@ const PlayerControls = (props) => {
           artists: response.data.item.artists.map((artist) => artist.name),
           image: response.data.item.album.images[2].url,
         };
-        setTheCurrentP(currentPlaying);
+        dispatch(setCurrentPlaylist(currentPlaying))
       } 
   };
 
@@ -69,7 +38,7 @@ const PlayerControls = (props) => {
     await axios.post( `https://api.spotify.com/v1/me/player/${direction}`,{},
         {
             headers: {
-            Authorization: "Bearer " + props.token,
+            Authorization: "Bearer " + token,
             "Content-Type": "application/json",
             },
         }
@@ -89,39 +58,37 @@ const PlayerControls = (props) => {
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: "Bearer " + props.token,
+            Authorization: "Bearer " + token,
           },
         }
       );   
 
-    setThePlayerEstado(!playerEstado);
-    getNewTrack()
+    dispatch(setPlayerEstado(!playerEstado));
 
   };    
-
-
-
- 
-    
+   
   return (
 
     <>
-      <div className='currentTrack'>
-          {currentP && (
-              <div className="current-track">
-                  <div >
-                      <img className="track__image" src={currentP.image} alt="currentPlaying" />
-                  </div>
-                  <div className="track__info">
-                      <h3 className="track__info__track__name">{currentP.name}</h3>
-                      <h5 className="track__info__track__artists">
-                      {currentP.artists.join(", ")}
-                      </h5>
-                    </div>
-              </div>
-          )}
-      </div>
-      <div className='controls-container'>
+    {
+      currentPlaylist &&(
+        <aticle className="current-track">
+          <div >
+            <img className="track__image" src={currentPlaylist.image} alt="currentPlaying" />
+          </div>
+          <div className="track__info">
+            <h3 className="track__info__track__name">{currentPlaylist.name}</h3>
+            <h5 className="track__info__track__artists">
+            {currentPlaylist.artists.join(", ")}
+            </h5>
+          </div>
+        </aticle>
+      )
+    }
+      
+
+
+      <section className='controls-container'>
           <div className="anterior">
             <CgPlayTrackPrev className="controls__button" onClick={() => changeTrack("previous")}/>
           </div>
@@ -132,8 +99,8 @@ const PlayerControls = (props) => {
           <div className="siguiente">
             <CgPlayTrackNext className="controls__button" onClick={() => changeTrack("next")}/>
           </div>
-      </div>
-      
+      </section>
+    
     </>
   );
 }

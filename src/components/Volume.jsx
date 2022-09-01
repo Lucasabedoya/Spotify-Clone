@@ -1,7 +1,11 @@
 import axios from 'axios';
 import React from 'react';
+import { useSelector } from 'react-redux';
 
-const Volume = (props) => {
+
+const Volume = () => {
+
+    const { token } = useSelector(state => state.spotify)
 
     const setVolume = async(e) => {
 
@@ -11,7 +15,7 @@ const Volume = (props) => {
                 volume_percent: parseInt(e.target.value)
             },
             headers: {
-            Authorization: "Bearer " + props.token,
+            Authorization: "Bearer " + token,
             "Content-Type": "application/json",
             },
         }
@@ -19,9 +23,9 @@ const Volume = (props) => {
     };
 
     return (
-        <div className='volume'>
+        <section className='volume'>
             <input type="range" onMouseUp={(e) => setVolume(e)} min={0} max={100} />
-        </div>
+        </section>
     );
 }
 

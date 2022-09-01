@@ -1,23 +1,23 @@
 import axios from 'axios'
 import React,{useEffect} from 'react';
-import {useStates} from '../utils/providerState'
-import { AiOutlineClockCircle } from 'react-icons/ai'
+import { useDispatch, useSelector } from 'react-redux';
+import { setPlaylist, setCurrentTrack, setCurrentPlaylist, setPlayerEstado } from '../store/counterSlice';
+import { AiOutlineClockCircle } from 'react-icons/ai';
 
-const Body = (props) => {
-    
-    const {setTrack,currentArtist} = props;
+const Body = () => {
 
-    const { estado, currentPl, setTheCurrentPl, currentT, setTheCurrentT, selectedP, setTheSelectedP, playerEstado, setThePlayerEstado, currentP, setTheCurrentP } = useStates();
+    const { token, id, playlists, currentTrack } = useSelector(state => state.spotify)
+    const dispatch = useDispatch();
 
     useEffect(() => {   
         
         const getPlaylistData = async() => {
 
             const response = await fetch(
-                `https://api.spotify.com/v1/playlists/${props.currentPlaylist}`,
+                `https://api.spotify.com/v1/playlists/${id}`,
                 {
                     headers: {
-                    Authorization: "Bearer " + props.token,
+                    Authorization: "Bearer " + token,
                     "Content-Type": "application/json",
                     },
                 }
@@ -37,7 +37,7 @@ const Body = (props) => {
                     tracks: data.tracks.items.map(({ track }) => ({
                         id: track.id, 
                         name: track.name, 
-                        artists: track.artists.map((artist) => artist.name),
+                        artists: track.artists.map((artist) => artist.name + " "),
                         image: track.album.images[2].url,
                         duration: track.duration_ms,
                         album: track.album.name,
@@ -45,26 +45,20 @@ const Body = (props) => {
                         track_number: track.track_number,
                     }))
                 }
-                setTheCurrentPl(currentPlaylist);
-                setTheCurrentT(currentTrack);
-            })
 
-            
+                dispatch(setPlaylist(currentPlaylist));
+                dispatch(setCurrentTrack(currentTrack.tracks));
+
+            })
             
         };
         
         getPlaylistData();
 
-    }, []);
+    }, [token, id]);
 
-    const playTrack = async (
-        id,
-        name,
-        artists,
-        image,
-        context_uri,
-        track_number
-    ) => {
+    const playTrack = async (id,name,artists,image,context_uri, track_number) => {
+
         const response = await axios.put(
           `https://api.spotify.com/v1/me/player/play`,
           {
@@ -77,21 +71,15 @@ const Body = (props) => {
           {
             headers: {
               "Content-Type": "application/json",
-              Authorization: "Bearer " + props.token,
+              Authorization: "Bearer " + token,
             },
           }
         );
         if (response.status === 204) {
-            const currentPlaying = {
-                id,
-                name,
-                artists,
-                image,
-            };
-        setTheCurrentP(currentPlaying);
-        } else {
-        setThePlayerEstado(true);
-        }
+            const currentPlaying = {id,name,artists,image,};
+        dispatch(setCurrentPlaylist(currentPlaying));   
+        dispatch(setPlayerEstado(true)); 
+        } 
     };
 
     function msToMinutes(millis = 237253) {
@@ -104,14 +92,14 @@ const Body = (props) => {
         <>
             <div className="playlist-container">
                 <section className="playlist-container__img">
-                    <img className="playlist__img" src={currentPl.image} alt={currentPl.name}/>
+                    <img className="playlist__img" src={playlists.image} alt={playlists.name}/>
                 </section>
                 <section className="playlist-container__description"> 
                 <p>lista</p>
-                    <h2 className="playlist__tittle">{currentPl.name}</h2>
+                    <h2 className="playlist__tittle">{playlists.name}</h2>
                     <span>
-                        <p className="playlist__description">{currentPl.description}</p>
-                        <p>{currentPl.owner} - {currentPl.total} canciones</p>
+                        <p className="playlist__description">{playlists.description}</p>
+                        <p>{playlists.owner} - {playlists.total} canciones</p>
                     </span>
                 </section>
             </div>
@@ -130,22 +118,16 @@ const Body = (props) => {
                         <AiOutlineClockCircle />
                     </div>
                 </div>
-
                 {
-                   currentT.tracks.map(({id,image,name,duration,artists,album,contextUrl,track_number},index) => {
+                   currentTrack.map(({id,image,name,duration,artists,album,contextUrl,track_number},index) => {
                     return(
                         <>
-                            <div key={id} className="track-container"onClick={() =>{
-                                    playTrack(id,name,artists,image,contextUrl,track_number)
-                                    setTrack(true)
-                                    currentArtist()
-                                    }
-                                }>
+                            <div key={id} className="track-container" onClick={() => playTrack(id,name,artists,image,contextUrl,track_number)}>
                                 <div className="track__description">
                                     <span>{index+1}</span>                       
                                     <img className="col__img"src={image} />
 
-                                    <div className="col track__autors">
+                                    <div className="track__autors">
                                         <p>{name}</p>
                                         <p>{artists}</p>
                                     </div>

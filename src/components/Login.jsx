@@ -1,17 +1,16 @@
 import React from 'react';
+// import {useStates} from '../utils/providerState'
 import '../styles.css';
-import {useStates} from '../utils/providerState'
-import { setNewToken } from '../utils/setNewToken';
+
+
 
 const Login = () => {
-
-    const {estado, setTheToken } = useStates();
 
     const callLogin = () => {
 
         const redirect = () =>{
             
-            const clientId = '6bc4306e996747fe866053ec3e0575ac';
+            const clientId = 'f1d0ed31ff01483689c858258ea68a72';
             const redirectUrl = 'http://localhost:3000/';
             const apiUrl = 'http://accounts.spotify.com/authorize';
             const scope = [
@@ -33,7 +32,9 @@ const Login = () => {
     return (    
         <div className="login__body">
             <img className="login__img" src="https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_CMYK_Black.png" alt="Spotify" />
-            <button className="login__button" onClick={callLogin}>Conectarse a spotify</button>
+            <button className="login__button" onClick={callLogin}>
+                <p className='login__button__txt'>Conectarse a spotify</p>
+            </button>
         </div>
     );
 }

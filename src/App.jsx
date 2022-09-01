@@ -1,21 +1,32 @@
 import React,{useEffect} from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Login from './components/Login';
 import Spotify from './components/Spotify';
-import {useStates} from './utils/providerState'
-import { setNewToken } from './utils/setNewToken';
+import { setToken } from './store/counterSlice';
 
 const App = () => {
 
-  const { estado, setTheToken, setTheNombre, nombre } = useStates();
+  // const { estado, setTheToken, setTheNombre, nombre } = useStates();
 
-  const newToken = setNewToken();
-  setTheToken(newToken);
+  const { token } = useSelector(state => state.spotify)
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (hash) {
+      const token = hash.substring(1).split("&")[0].split("=")[1];
+      if (token) {
+        dispatch( setToken(token))
+      }
+    }
+  }, [token]);
+  
 
   return (
     <div>
 
       {
-        estado.token ? <Spotify token={estado.token} /> : <Login />
+        token ? <Spotify /> : <Login />
       }
 
     </div>
